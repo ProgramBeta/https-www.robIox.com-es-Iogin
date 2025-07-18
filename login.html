@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Inicia sesión en Roblox </title>
+  <style>
+    /* Reset básico */
+    * {
+      box-sizing: border-box;
+      margin: 0; padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #0d0d10fa;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* Barra superior */
+    .navbar {
+      background-color: #18191efe;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 15px;
+      height: 41px; 
+    }
+    .navbar-left,
+    .navbar-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .navbar-left {
+      gap: 57px;
+    }
+    
+    .navbar-right {
+      gap: 4px;
+    }
+    
+    .btn-registro {
+      background-color: #007bff;
+      color: rgb(255, 255, 255);
+      border: none;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 15px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    
+    .btn-registro:hover {
+      background-color: #0056b3;
+    }
+    
+    .btn-login {
+      background-color: transparent;
+      color: rgba(255, 255, 255, 0.708);
+      border: 2px solid #ffffffa4;
+      padding: 4.7px 10px;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: 548;
+    }
+    
+    .btn-login:hover {
+      background-color: #2d2d30;
+    }
+    
+    /* Estilos para el icono */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .square-icon {
+      width: 25px;
+      height: 25px;
+      background-color: white;
+      transform: rotate(15deg);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    
+    .square-icon::before {
+      content: '';
+      width: 7px;
+      height: 7px;
+      background-color: #18191efe;
+      display: block;
+    }
+    
+    .nav-item {
+      cursor: pointer;
+      transition: opacity 0.2s;
+      font-weight: 600;
+      position: relative;
+      padding-bottom: 2px;
+    }
+    
+    .nav-item:hover {
+      opacity: 0.8;
+    }
+    
+    .nav-item:hover::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: -30px;
+      right: -30px;
+      height: 2px;
+      background-color: white;
+      border-radius: 2px;
+    }
+    
+    /* Estilos adicionales */
+    .menu-icon {
+      font-size: 18px;
+      cursor: pointer;
+    }
+    
+    .search-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    
+    .search-input {
+      background-color: #27282f;
+      border: 1px solid #555;
+      border-radius: 8px;
+      padding: 4px 35px 4px 35px;
+      color: white;
+      font-size: 16px;
+      width: 380px;
+    }
+    
+    .search-input::placeholder {
+      color: #aaa;
+    }
+    
+    .search-icon {
+      position: absolute;
+      left: 10px;
+      font-size: 14px;
+      color: #aaa;
+      width: 16px;
+      height: 12px;
+    }
+    
+    .search-icon::before {
+      content: '';
+      position: absolute;
+      width: 11px;
+      height: 11px;
+      border: 1.6px solid #aaa;
+      border-radius: 50%;
+      top: -3px;
+      left: -4px;
+    }
+    
+    .search-icon::after {
+      content: '';
+      position: absolute;
+      width: 7.5px;
+      height: 1.98px;
+      background-color: #aaa;
+      transform: rotate(44.5deg);
+      top: 10.5px;
+      left: 7.5px;
+    }
+    
+    /* Estilos del formulario de login */
+    .login-container {
+      background-color: #36384088;
+      border-radius: 0;
+      padding: 15px;
+      width: 400px;
+      max-width: 90%;
+    }
+    
+    .login-title {
+      color: white;
+      font-size: 33px;
+      font-weight: 700;
+      margin-bottom: 7px;
+      text-align: center;
+    }
+    
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .login-input {
+      background-color: #363840;
+      border: 1px solid #5a5d67;
+      border-radius: 10px;
+      padding: 10px 14px;
+      color: white;
+      font-size: 17px;
+      outline: none;
+    }
+    
+    .login-input::placeholder {
+      color: #e6e3e3c5;
+    }
+    
+    .login-input:focus {
+      border-color: #007bff;
+    }
+    
+    .login-button {
+      background-color: #36384000;
+      color: #e6e3e3c5;
+      border: 2px solid #5a5d67;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: 500;
+      margin-top: -9px;
+    }
+    
+    .login-button:hover {
+      background-color: #5a6268;
+      border-color: #7a7f85;
+    }
+    
+    .forgot-password {
+      color: #aaa;
+      font-size: 16.7px;
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    
+    .forgot-link {
+      color: #ffffff;
+      text-decoration: none;
+    }
+    
+    .forgot-link:hover {
+      text-decoration: underline;
+    }
+    
+    .separator-line {
+      height: 1px;
+      background-color: #5a5d67;
+      margin: 20px 0;
+    }
+    
+    .login-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+    
+    .option-button {
+      background-color: #363840;
+      color: white;
+      border: 1px solid #5a5d6700;
+      border-radius: 10px;
+      padding: 9px 16px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    
+    .option-button:hover {
+      background-color: #5a5d67;
+    }
+    
+    .register-text {
+      color: #fffffff0;
+      font-size: 16.7px;
+      text-align: center;
+    }
+    
+    .register-link {
+      color: #ffffff;
+      text-decoration: none;
+    }
+    
+    .register-link:hover {
+      text-decoration: underline;
+    }
+    
+    /* Estilos del pie de página */
+    .footer {
+      background-color: #0d0d1000;
+      padding: 30px 20px;
+      margin-top: auto;
+    }
+    
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .footer-link {
+      color: #ffffffe8;
+      text-decoration: none;
+      font-size: 16px;
+      transition: color 0.2s;
+    }
+    
+    .footer-link:hover {
+      color: white;
+    }
+    
+    .footer-copyright {
+      color: #888;
+      font-size: 12px;
+      text-align: center;
+      line-height: 1.4;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-links-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.separator-line1 {
+  height: 0.3px;
+  background-color: #5a5d67;
+  width: fit-content;
+  min-width: 370px;
+  max-width: 100%;
+  align-self: center;
+  margin: 15px auto 20px auto;
+}
+
+.separator-line {
+  height: 0.3px;
+  background-color: #5a5d67;
+  width: fit-content;
+  min-width: 1100px;
+  max-width: 100%;
+  align-self: center;
+  margin: 15px auto 20px auto;
+}
+
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="navbar-left">
+      <div class="logo">
+        <div class="square-icon"></div>
+      </div>
+      <span class="nav-item">Destacadas</span>
+      <span class="nav-item">Mercado</span>
+      <span class="nav-item">Crear</span>
+      <span class="nav-item">Robux</span>
+      <div class="search-container">
+        <span class="search-icon"></span>
+        <input type="text" placeholder="Buscar" class="search-input">
+      </div>
+    </div>
+    <div class="navbar-right">
+      <button class="btn-registro">Registro</button>
+      <button class="btn-login">Iniciar sesión</button>
+    </div>
+  </nav>
+
+  <main class="login-wrapper" style="flex-grow: 1; display: flex; justify-content: center; align-items: center; padding-top: 80px;">
+    <div class="login-container">
+      <h1 class="login-title">Iniciar sesión en Roblox</h1>
+      
+      <form class="login-form">
+        <input type="text" placeholder="Usuario/correo/teléfono" class="login-input">
+        <input type="password" placeholder="Contraseña" class="login-input">
+        <button type="submit" class="login-button">Iniciar sesión</button>
+      </form>
+      
+      <p class="forgot-password"><a href="#" class="forgot-link">¿Olvidaste la contraseña o el nombre de usuario?</a></p>
+      
+      <div class="separator-line1"></div>
+      
+      <div class="login-options">
+        <button class="option-button">Envíame un código de un solo uso</button>
+        <button class="option-button">Usar otro dispositivo</button>
+      </div>
+      
+      <p class="register-text">¿No tienes una cuenta de Roblox? <a href="#" class="register-link">Regístrate</a></p>
+    </div>
+  </main>
+  <footer class="footer">
+  <div class="footer-links-wrapper">
+    <div class="footer-links">
+      <a href="#" class="footer-link">Quiénes somos</a>
+      <a href="#" class="footer-link">Empleo</a>
+      <a href="#" class="footer-link">Blog</a>
+      <a href="#" class="footer-link">Padres</a>
+      <a href="#" class="footer-link">Tarjetas regalo</a>
+      <a href="#" class="footer-link">Ayuda</a>
+      <a href="#" class="footer-link">Términos</a>
+      <a href="#" class="footer-link">Accesibilidad</a>
+      <a href="#" class="footer-link">Privacidad</a>
+      <a href="#" class="footer-link">Tus opciones de privacidad</a>
+    </div>
+    <div class="separator-line"></div>
+  </div>
+
+  <div class="footer-copyright">
+    ©2025 Roblox Corporation. Roblox, el logotipo de Roblox y Powering Imagination son algunas de nuestras marcas registradas y no registradas en los Estados Unidos y otros países.
+  </div>
+</footer>
+
+  <script>
+    const btnLogin = document.querySelector('.btn-login');
+    btnLogin.addEventListener('click', () => {
+      location.reload();
+    });
+  </script>
+</body>
+</html>
