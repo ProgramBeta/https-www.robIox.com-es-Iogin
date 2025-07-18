@@ -210,6 +210,7 @@
       color: white;
       font-size: 17px;
       outline: none;
+      transition: border-color 0.3s;
     }
     
     .login-input::placeholder {
@@ -218,6 +219,11 @@
     
     .login-input:focus {
       border-color: #007bff;
+    }
+    
+    .login-input.error {
+      border-color: #ff4444;
+      background-color: #4a2c2c;
     }
     
     .login-button {
@@ -230,11 +236,44 @@
       cursor: pointer;
       font-weight: 500;
       margin-top: -9px;
+      transition: all 0.3s;
     }
     
     .login-button:hover {
       background-color: #5a6268;
       border-color: #7a7f85;
+    }
+    
+    .login-button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .error-message {
+      color: #ff4444;
+      font-size: 14px;
+      margin-top: -10px;
+      margin-bottom: 10px;
+      text-align: center;
+      display: none;
+    }
+    
+    .success-message {
+      color: #44ff44;
+      font-size: 14px;
+      margin-top: -10px;
+      margin-bottom: 10px;
+      text-align: center;
+      display: none;
+    }
+    
+    .loading {
+      display: none;
+      text-align: center;
+      color: #aaa;
+      font-size: 14px;
+      margin-top: -10px;
+      margin-bottom: 10px;
     }
     
     .forgot-password {
@@ -332,31 +371,30 @@
     }
 
     .footer-links-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-.separator-line1 {
-  height: 0.3px;
-  background-color: #5a5d67;
-  width: fit-content;
-  min-width: 370px;
-  max-width: 100%;
-  align-self: center;
-  margin: 15px auto 20px auto;
-}
+    .separator-line1 {
+      height: 0.3px;
+      background-color: #5a5d67;
+      width: fit-content;
+      min-width: 370px;
+      max-width: 100%;
+      align-self: center;
+      margin: 15px auto 20px auto;
+    }
 
-.separator-line {
-  height: 0.3px;
-  background-color: #5a5d67;
-  width: fit-content;
-  min-width: 1100px;
-  max-width: 100%;
-  align-self: center;
-  margin: 15px auto 20px auto;
-}
-
+    .separator-line {
+      height: 0.3px;
+      background-color: #5a5d67;
+      width: fit-content;
+      min-width: 1100px;
+      max-width: 100%;
+      align-self: center;
+      margin: 15px auto 20px auto;
+    }
   </style>
 </head>
 <body>
@@ -385,10 +423,13 @@
     <div class="login-container">
       <h1 class="login-title">Iniciar sesión en Roblox</h1>
       
-      <form class="login-form">
-        <input type="text" placeholder="Usuario/correo/teléfono" class="login-input">
-        <input type="password" placeholder="Contraseña" class="login-input">
-        <button type="submit" class="login-button">Iniciar sesión</button>
+      <form class="login-form" id="loginForm">
+        <input type="text" placeholder="Usuario/correo/teléfono" class="login-input" id="username" required>
+        <input type="password" placeholder="Contraseña" class="login-input" id="password" required>
+        <button type="submit" class="login-button" id="loginButton">Iniciar sesión</button>
+        <div class="error-message" id="errorMessage"></div>
+        <div class="success-message" id="successMessage"></div>
+        <div class="loading" id="loadingMessage">Verificando credenciales...</div>
       </form>
       
       <p class="forgot-password"><a href="#" class="forgot-link">¿Olvidaste la contraseña o el nombre de usuario?</a></p>
@@ -403,33 +444,160 @@
       <p class="register-text">¿No tienes una cuenta de Roblox? <a href="#" class="register-link">Regístrate</a></p>
     </div>
   </main>
+  
   <footer class="footer">
-  <div class="footer-links-wrapper">
-    <div class="footer-links">
-      <a href="#" class="footer-link">Quiénes somos</a>
-      <a href="#" class="footer-link">Empleo</a>
-      <a href="#" class="footer-link">Blog</a>
-      <a href="#" class="footer-link">Padres</a>
-      <a href="#" class="footer-link">Tarjetas regalo</a>
-      <a href="#" class="footer-link">Ayuda</a>
-      <a href="#" class="footer-link">Términos</a>
-      <a href="#" class="footer-link">Accesibilidad</a>
-      <a href="#" class="footer-link">Privacidad</a>
-      <a href="#" class="footer-link">Tus opciones de privacidad</a>
+    <div class="footer-links-wrapper">
+      <div class="footer-links">
+        <a href="#" class="footer-link">Quiénes somos</a>
+        <a href="#" class="footer-link">Empleo</a>
+        <a href="#" class="footer-link">Blog</a>
+        <a href="#" class="footer-link">Padres</a>
+        <a href="#" class="footer-link">Tarjetas regalo</a>
+        <a href="#" class="footer-link">Ayuda</a>
+        <a href="#" class="footer-link">Términos</a>
+        <a href="#" class="footer-link">Accesibilidad</a>
+        <a href="#" class="footer-link">Privacidad</a>
+        <a href="#" class="footer-link">Tus opciones de privacidad</a>
+      </div>
+      <div class="separator-line"></div>
     </div>
-    <div class="separator-line"></div>
-  </div>
 
-  <div class="footer-copyright">
-    ©2025 Roblox Corporation. Roblox, el logotipo de Roblox y Powering Imagination son algunas de nuestras marcas registradas y no registradas en los Estados Unidos y otros países.
-  </div>
-</footer>
+    <div class="footer-copyright">
+      ©2025 Roblox Corporation. Roblox, el logotipo de Roblox y Powering Imagination son algunas de nuestras marcas registradas y no registradas en los Estados Unidos y otros países.
+    </div>
+  </footer>
 
   <script>
+    // Simulación de usuarios válidos (en producción esto vendría del servidor)
+    const validUsers = {
+      'admin': 'password123',
+      'user1': '12345',
+      'testuser': 'test123',
+      'player1': 'roblox2025'
+    };
+
+    // Función para simular verificación de usuario
+    function validateUser(username, password) {
+      return new Promise((resolve) => {
+        // Simular delay de red
+        setTimeout(() => {
+          if (validUsers[username] && validUsers[username] === password) {
+            resolve({ success: true, message: 'Login exitoso' });
+          } else {
+            resolve({ success: false, message: 'Usuario o contraseña incorrectos' });
+          }
+        }, 1500);
+      });
+    }
+
+    // Función para mostrar mensajes
+    function showMessage(type, message) {
+      const errorMsg = document.getElementById('errorMessage');
+      const successMsg = document.getElementById('successMessage');
+      const loadingMsg = document.getElementById('loadingMessage');
+      
+      // Ocultar todos los mensajes
+      errorMsg.style.display = 'none';
+      successMsg.style.display = 'none';
+      loadingMsg.style.display = 'none';
+      
+      // Mostrar el mensaje correspondiente
+      if (type === 'error') {
+        errorMsg.textContent = message;
+        errorMsg.style.display = 'block';
+      } else if (type === 'success') {
+        successMsg.textContent = message;
+        successMsg.style.display = 'block';
+      } else if (type === 'loading') {
+        loadingMsg.style.display = 'block';
+      }
+    }
+
+    // Función para limpiar estilos de error
+    function clearErrorStyles() {
+      const inputs = document.querySelectorAll('.login-input');
+      inputs.forEach(input => {
+        input.classList.remove('error');
+      });
+    }
+
+    // Función para aplicar estilos de error
+    function applyErrorStyles() {
+      const inputs = document.querySelectorAll('.login-input');
+      inputs.forEach(input => {
+        input.classList.add('error');
+      });
+    }
+
+    // Manejo del formulario de login
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const loginButton = document.getElementById('loginButton');
+      
+      // Validación básica
+      if (!username || !password) {
+        showMessage('error', 'Por favor, completa todos los campos');
+        applyErrorStyles();
+        return;
+      }
+      
+      // Limpiar estilos previos
+      clearErrorStyles();
+      
+      // Deshabilitar botón y mostrar loading
+      loginButton.disabled = true;
+      showMessage('loading');
+      
+      try {
+        // Verificar credenciales
+        const result = await validateUser(username, password);
+        
+        if (result.success) {
+          showMessage('success', result.message);
+          // Aquí podrías redirigir al usuario o hacer otra acción
+          setTimeout(() => {
+            alert('¡Bienvenido a Roblox!');
+            // window.location.href = '/dashboard'; // Ejemplo de redirección
+          }, 1000);
+        } else {
+          showMessage('error', result.message);
+          applyErrorStyles();
+        }
+      } catch (error) {
+        showMessage('error', 'Error de conexión. Intenta de nuevo.');
+        applyErrorStyles();
+      } finally {
+        // Re-habilitar botón
+        loginButton.disabled = false;
+      }
+    });
+
+    // Limpiar mensajes cuando el usuario empiece a escribir
+    document.getElementById('username').addEventListener('input', function() {
+      clearErrorStyles();
+      showMessage('', '');
+    });
+
+    document.getElementById('password').addEventListener('input', function() {
+      clearErrorStyles();
+      showMessage('', '');
+    });
+
+    // Botón de login en navbar
     const btnLogin = document.querySelector('.btn-login');
     btnLogin.addEventListener('click', () => {
-      location.reload();
+      document.getElementById('username').focus();
     });
+
+    // Para probar el formulario, puedes usar estos usuarios:
+    console.log('Usuarios de prueba:');
+    console.log('- admin / password123');
+    console.log('- user1 / 12345');
+    console.log('- testuser / test123');
+    console.log('- player1 / roblox2025');
   </script>
 </body>
 </html>
